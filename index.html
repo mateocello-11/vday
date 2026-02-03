@@ -24,11 +24,21 @@
       margin: 1.5rem auto;
     }
 
-    img {
-      max-width: 90%;
-      border-radius: 16px;
+    figure {
       margin-top: 1.5rem;
+    }
+
+    img {
+      width: 100%;
+      max-width: 420px;   /* image size control */
+      border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    figcaption {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #555;
     }
   </style>
 </head>
@@ -42,13 +52,27 @@
     Hope you like it💕
   </p>
 
-  <!-- Photos (in order: e1, e2, E3) -->
-  <img src="e1.png" alt="so SEXY❤️">
-  <img src="e2.png" alt=" 💕">
-  <img src="E3.png" alt="luvu baby❤️">
+  <!-- Photos with captions -->
+  <figure>
+    <img src="e1.png" alt="so SEXY ❤️">
+    <figcaption>so SEXY ❤️</figcaption>
+  </figure>
+
+  <figure>
+    <img src="e2.png" alt="💕">
+    <figcaption>💕</figcaption>
+  </figure>
+
+  <figure>
+    <img src="E3.png" alt="luvu baby ❤️">
+    <figcaption>luvu baby ❤️</figcaption>
+  </figure>
 
   <!-- GIF -->
-  <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="Love GIF">
+  <figure>
+    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="Love GIF">
+    <figcaption>this is literally us</figcaption>
+  </figure>
 
 </body>
 </html>
