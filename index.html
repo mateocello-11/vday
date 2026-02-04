@@ -145,7 +145,7 @@
   <!-- Mini game -->
   <section class="game">
     <h2>Catch the Hearts 💘</h2>
-    <p class="sub">Move the little bucket and catch as many hearts as you can in 30 seconds.</p>
+    <p class="sub">Move the little bucket and catch as many hearts as you can... you'd probably beat me in this game too =/</p>
 
     <div class="hud">
       <div>Score: <span id="score">0</span></div>
@@ -154,7 +154,7 @@
     </div>
 
     <canvas id="gameCanvas" width="420" height="520"></canvas>
-    <div class="tiny">Desktop: move your mouse. Mobile: drag your finger or tap left/right.</div>
+    <div class="tiny"> </div>
   </section>
 
   <!-- TikTok section -->
@@ -195,6 +195,9 @@
     // Game config
     const W = canvas.width;
     const H = canvas.height;
+
+    // WIN condition
+    const WIN_SCORE = 20;
 
     let running = false;
     let score = 0;
@@ -246,7 +249,7 @@
         if (!running) return;
         timeLeft -= 1;
         timeEl.textContent = timeLeft;
-        if (timeLeft <= 0) endGame();
+        if (timeLeft <= 0) endGame(false);
       }, 1000);
 
       lastSpawn = 0;
@@ -254,11 +257,17 @@
       requestAnimationFrame(loop);
     }
 
-    function endGame() {
+    function endGame(won) {
       running = false;
       clearInterval(timerId);
       timerId = null;
-      drawEndScreen();
+
+      if (won) {
+        draw();
+        overlayText('YOU WIN 🏆💘', 'ok you win… I love you 😌');
+      } else {
+        drawEndScreen();
+      }
     }
 
     function spawnHeart() {
@@ -315,6 +324,11 @@
           score += 1;
           scoreEl.textContent = score;
           hearts.splice(i, 1);
+
+          if (score >= WIN_SCORE) {
+            endGame(true);
+            return;
+          }
         }
       }
     }
