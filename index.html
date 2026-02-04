@@ -56,6 +56,64 @@
       margin-bottom: 1rem;
       color: #c9184a;
     }
+
+    /* Game styling */
+    .game {
+      max-width: 650px;
+      margin: 2.5rem auto 0;
+      background: rgba(255, 240, 245, 0.65);
+      border-radius: 20px;
+      padding: 1.25rem 1rem 1.5rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.10);
+    }
+
+    .game h2 {
+      margin: 0.2rem 0 0.4rem;
+      color: #c9184a;
+      font-size: 1.4rem;
+    }
+
+    .game .sub {
+      margin: 0 auto 1rem;
+      max-width: 560px;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .hud {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 0.75rem 0 1rem;
+      color: #c9184a;
+      font-weight: 700;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 0.65rem 1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    #gameCanvas {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      touch-action: none; /* key for mobile dragging */
+    }
+
+    .tiny {
+      margin-top: 0.8rem;
+      font-size: 0.95rem;
+      color: #666;
+    }
   </style>
 </head>
 <body>
@@ -84,10 +142,25 @@
     <figcaption>luvu baby ❤️</figcaption>
   </figure>
 
+  <!-- Mini game -->
+  <section class="game">
+    <h2>Catch the Hearts 💘</h2>
+    <p class="sub">Move the little bucket and catch as many hearts as you can in 30 seconds.</p>
+
+    <div class="hud">
+      <div>Score: <span id="score">0</span></div>
+      <div>Time: <span id="time">30</span>s</div>
+      <button class="btn" id="startBtn">Start / Restart</button>
+    </div>
+
+    <canvas id="gameCanvas" width="420" height="520"></canvas>
+    <div class="tiny">Desktop: move your mouse. Mobile: drag your finger or tap left/right.</div>
+  </section>
+
   <!-- TikTok section -->
   <div class="tiktok-wrapper">
     <div class="tiktok-caption">
-      How I move when I am around u ⬇️ 🥵
+      How I move when I am around u ⬇️ 🐔
     </div>
 
     <blockquote class="tiktok-embed"
@@ -109,6 +182,297 @@
     <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="Love GIF">
     <figcaption>one last chicken for good measure</figcaption>
   </figure>
+
+  <script>
+  (() => {
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const scoreEl = document.getElementById('score');
+    const timeEl = document.getElementById('time');
+    const startBtn = document.getElementById('startBtn');
+
+    // Game config
+    const W = canvas.width;
+    const H = canvas.height;
+
+    let running = false;
+    let score = 0;
+    let timeLeft = 30;
+    let lastSpawn = 0;
+    let lastFrame = 0;
+    let timerId = null;
+
+    // Bucket (player)
+    const bucket = {
+      w: 90,
+      h: 22,
+      x: (W - 90) / 2,
+      y: H - 60,
+      targetX: (W - 90) / 2,
+      speed: 0.18
+    };
+
+    const hearts = [];
+
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function reset() {
+      running = false;
+      score = 0;
+      timeLeft = 30;
+      hearts.length = 0;
+      bucket.x = (W - bucket.w) / 2;
+      bucket.targetX = bucket.x;
+      scoreEl.textContent = score;
+      timeEl.textContent = timeLeft;
+      clearInterval(timerId);
+      timerId = null;
+      drawStartScreen();
+    }
+
+    function start() {
+      running = true;
+      score = 0;
+      timeLeft = 30;
+      hearts.length = 0;
+      scoreEl.textContent = score;
+      timeEl.textContent = timeLeft;
+
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        if (!running) return;
+        timeLeft -= 1;
+        timeEl.textContent = timeLeft;
+        if (timeLeft <= 0) endGame();
+      }, 1000);
+
+      lastSpawn = 0;
+      lastFrame = performance.now();
+      requestAnimationFrame(loop);
+    }
+
+    function endGame() {
+      running = false;
+      clearInterval(timerId);
+      timerId = null;
+      drawEndScreen();
+    }
+
+    function spawnHeart() {
+      // Hearts get a little faster as score increases
+      const speed = rand(110, 160) + Math.min(score * 2, 120);
+      hearts.push({
+        x: rand(20, W - 20),
+        y: -20,
+        r: rand(10, 16),
+        vy: speed,
+        drift: rand(-30, 30),
+        rot: rand(0, Math.PI * 2)
+      });
+    }
+
+    function update(dt) {
+      // move bucket smoothly toward targetX
+      bucket.x += (bucket.targetX - bucket.x) * (1 - Math.pow(0.001, dt));
+
+      // clamp
+      bucket.x = Math.max(10, Math.min(W - bucket.w - 10, bucket.x));
+
+      // spawn hearts
+      lastSpawn += dt * 1000;
+      const spawnEvery = Math.max(260, 520 - score * 5); // ms
+      if (lastSpawn > spawnEvery) {
+        spawnHeart();
+        lastSpawn = 0;
+      }
+
+      // update hearts
+      for (let i = hearts.length - 1; i >= 0; i--) {
+        const h = hearts[i];
+        h.y += h.vy * dt;
+        h.x += h.drift * dt;
+        h.rot += dt * 3;
+
+        // remove if off screen
+        if (h.y - h.r > H + 30) {
+          hearts.splice(i, 1);
+          continue;
+        }
+
+        // collision with bucket
+        const bx = bucket.x;
+        const by = bucket.y;
+        const hit =
+          h.x > bx - 5 &&
+          h.x < bx + bucket.w + 5 &&
+          h.y + h.r > by &&
+          h.y - h.r < by + bucket.h;
+
+        if (hit) {
+          score += 1;
+          scoreEl.textContent = score;
+          hearts.splice(i, 1);
+        }
+      }
+    }
+
+    function drawBackground() {
+      // soft pink gradient
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, 'rgba(255, 230, 230, 0.9)');
+      g.addColorStop(1, 'rgba(255, 240, 245, 0.9)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      // subtle sparkles
+      ctx.fillStyle = 'rgba(201, 24, 74, 0.08)';
+      for (let i = 0; i < 18; i++) {
+        ctx.beginPath();
+        ctx.arc((i * 37) % W, (i * 61) % H, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawBucket() {
+      // bucket body
+      ctx.fillStyle = 'rgba(201, 24, 74, 0.85)';
+      roundRect(bucket.x, bucket.y, bucket.w, bucket.h, 10);
+      ctx.fill();
+
+      // bucket lip
+      ctx.fillStyle = 'rgba(201, 24, 74, 0.95)';
+      roundRect(bucket.x - 6, bucket.y - 8, bucket.w + 12, 10, 8);
+      ctx.fill();
+
+      // cute label
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      ctx.font = 'bold 12px system-ui, -apple-system, Segoe UI, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('u + me', bucket.x + bucket.w / 2, bucket.y + 16);
+    }
+
+    function drawHeart(h) {
+      ctx.save();
+      ctx.translate(h.x, h.y);
+      ctx.rotate(h.rot);
+      ctx.scale(h.r / 14, h.r / 14);
+
+      ctx.fillStyle = 'rgba(201, 24, 74, 0.95)';
+      ctx.beginPath();
+      ctx.moveTo(0, 6);
+      ctx.bezierCurveTo(-12, -6, -8, -16, 0, -8);
+      ctx.bezierCurveTo(8, -16, 12, -6, 0, 6);
+      ctx.closePath();
+      ctx.fill();
+
+      // shine
+      ctx.fillStyle = 'rgba(255,255,255,0.25)';
+      ctx.beginPath();
+      ctx.arc(-3, -6, 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function draw() {
+      drawBackground();
+
+      // hearts
+      for (const h of hearts) drawHeart(h);
+
+      // bucket
+      drawBucket();
+
+      // top hint
+      ctx.fillStyle = 'rgba(0,0,0,0.45)';
+      ctx.font = '600 13px system-ui, -apple-system, Segoe UI, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('catch the hearts 💘', W / 2, 26);
+    }
+
+    function drawStartScreen() {
+      draw();
+      overlayText('Tap Start 💖', 'Catch as many hearts as you can!');
+    }
+
+    function drawEndScreen() {
+      draw();
+      overlayText(`Time! Score: ${score} 💘`, 'Hit Start/Restart to play again');
+    }
+
+    function overlayText(line1, line2) {
+      ctx.save();
+      ctx.fillStyle = 'rgba(255, 240, 245, 0.85)';
+      roundRect(40, H / 2 - 70, W - 80, 120, 18);
+      ctx.fill();
+
+      ctx.fillStyle = '#c9184a';
+      ctx.textAlign = 'center';
+      ctx.font = '800 22px system-ui, -apple-system, Segoe UI, sans-serif';
+      ctx.fillText(line1, W / 2, H / 2 - 15);
+
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.font = '600 14px system-ui, -apple-system, Segoe UI, sans-serif';
+      ctx.fillText(line2, W / 2, H / 2 + 18);
+      ctx.restore();
+    }
+
+    function roundRect(x, y, w, h, r) {
+      const rr = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + rr, y);
+      ctx.arcTo(x + w, y, x + w, y + h, rr);
+      ctx.arcTo(x + w, y + h, x, y + h, rr);
+      ctx.arcTo(x, y + h, x, y, rr);
+      ctx.arcTo(x, y, x + w, y, rr);
+      ctx.closePath();
+    }
+
+    function loop(t) {
+      if (!running) return;
+      const dt = Math.min(0.033, (t - lastFrame) / 1000);
+      lastFrame = t;
+
+      update(dt);
+      draw();
+
+      requestAnimationFrame(loop);
+    }
+
+    function setTargetFromClientX(clientX) {
+      const rect = canvas.getBoundingClientRect();
+      const x = (clientX - rect.left) * (W / rect.width);
+      bucket.targetX = x - bucket.w / 2;
+    }
+
+    // Desktop mouse
+    canvas.addEventListener('mousemove', (e) => {
+      if (!running) return;
+      setTargetFromClientX(e.clientX);
+    });
+
+    // Mobile touch + tap
+    canvas.addEventListener('pointerdown', (e) => {
+      if (!running) return;
+      canvas.setPointerCapture(e.pointerId);
+      setTargetFromClientX(e.clientX);
+    });
+
+    canvas.addEventListener('pointermove', (e) => {
+      if (!running) return;
+      setTargetFromClientX(e.clientX);
+    });
+
+    // Start button
+    startBtn.addEventListener('click', () => start());
+
+    // Initialize
+    reset();
+  })();
+  </script>
 
 </body>
 </html>
