@@ -114,9 +114,93 @@
       font-size: 0.95rem;
       color: #666;
     }
+
+    /* Intro overlay */
+    .intro {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #ffe6e6, #fff0f5);
+      z-index: 9999;
+    }
+
+    .intro-card {
+      max-width: 700px;
+      width: 100%;
+      background: rgba(255, 240, 245, 0.88);
+      border-radius: 24px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      text-align: center;
+    }
+
+    .drop-in {
+      color: #c9184a;
+      font-size: 2.2rem;
+      margin: 0 0 1.2rem;
+      opacity: 0;
+      transform: translateY(-18px);
+      animation: dropIn 700ms ease-out forwards;
+    }
+
+    @keyframes dropIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .intro-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .intro-btn {
+      border: none;
+      border-radius: 14px;
+      padding: 0.9rem 1.3rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .youtube-wrap {
+      margin-top: 1.25rem;
+      display: none;
+    }
+
+    .youtube-wrap iframe {
+      width: 100%;
+      max-width: 560px;
+      aspect-ratio: 16 / 9;
+      height: auto;
+      border: 0;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
   </style>
 </head>
 <body>
+
+  <!-- INTRO OVERLAY -->
+  <div id="intro" class="intro">
+    <div class="intro-card">
+      <h1 class="drop-in">chicken, will you be my valentine? 💘</h1>
+
+      <div class="intro-buttons">
+        <button class="intro-btn" id="yesA">Yes</button>
+        <button class="intro-btn" id="yesB">Yes</button>
+      </div>
+
+      <div id="ytWrap" class="youtube-wrap"></div>
+    </div>
+  </div>
+
+  <div id="mainContent" style="display:none;">
 
   <h1>Happy Valentine’s Day my little chickennnn❤️<</h1>
 
@@ -185,6 +269,31 @@
 
   <script>
   (() => {
+    const intro = document.getElementById('intro');
+    const main = document.getElementById('mainContent');
+    const ytWrap = document.getElementById('ytWrap');
+
+    function begin() {
+      ytWrap.style.display = 'block';
+      ytWrap.innerHTML = `
+        <iframe
+          width="560" height="315"
+          src="https://www.youtube.com/embed/YHH4giJHWB8?autoplay=1&mute=0&playsinline=1"
+          title="YouTube video player"
+          frameborder="0"
+          allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      `;
+
+      intro.style.display = 'none';
+      main.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    document.getElementById('yesA').addEventListener('click', begin);
+    document.getElementById('yesB').addEventListener('click', begin);
+
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
@@ -487,6 +596,25 @@
     reset();
   })();
   </script>
+
+  <script>
+    const intro = document.getElementById('intro');
+    const main = document.getElementById('mainContent');
+    const ytWrap = document.getElementById('ytWrap');
+
+    function begin() {
+      ytWrap.style.display = 'block';
+      ytWrap.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/YHH4giJHWB8?autoplay=1&mute=0&playsinline=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+      intro.style.display = 'none';
+      main.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    document.getElementById('yesA').addEventListener('click', begin);
+    document.getElementById('yesB').addEventListener('click', begin);
+  </script>
+
+  </div>
 
 </body>
 </html>
