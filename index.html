@@ -168,35 +168,48 @@
       cursor: pointer;
     }
 
-    .youtube-wrap {
+    .spotify-wrap {
       margin-top: 1.25rem;
-      display: none;
     }
 
-    .youtube-wrap iframe {
-      width: 100%;
-      max-width: 560px;
-      aspect-ratio: 16 / 9;
-      height: auto;
-      border: 0;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    /* keep music "hidden" but playing */
+    #globalMusic {
+      position: fixed;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      left: -9999px;
+      top: -9999px;
     }
   </style>
 </head>
 <body>
 
+  <!-- MUSIC LIVES HERE (injected on Next) -->
+  <div id="globalMusic"></div>
+
   <!-- INTRO OVERLAY -->
   <div id="intro" class="intro">
     <div class="intro-card">
-      <h1 class="drop-in">chicken, will you be my valentine? 💘</h1>
 
-      <div class="intro-buttons">
-        <button class="intro-btn" id="yesA">Yes</button>
-        <button class="intro-btn" id="yesB">Yes</button>
+      <!-- Step 1 -->
+      <div id="step1">
+        <h1 class="drop-in">my little eggington</h1>
+        <div class="intro-buttons">
+          <button class="intro-btn" id="nextBtn">next</button>
+        </div>
       </div>
 
-      <div id="ytWrap" class="youtube-wrap"></div>
+      <!-- Step 2 -->
+      <div id="step2" style="display:none;">
+        <h1 class="drop-in">will you be my valentine? 💘💘💘</h1>
+
+        <div class="intro-buttons">
+          <button class="intro-btn" id="yesA">Yes</button>
+          <button class="intro-btn" id="yesB">Yes</button>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -225,6 +238,9 @@
     <img src="E3.png" alt="luvu baby ❤️">
     <figcaption>luvu baby ❤️</figcaption>
   </figure>
+
+  <!-- Stop music button (above TikTok) -->
+  <button class="btn" id="stopMusicBtn">click to stop playing music</button>
 
   <!-- TikTok section -->
   <div class="tiktok-wrapper">
@@ -271,28 +287,53 @@
   (() => {
     const intro = document.getElementById('intro');
     const main = document.getElementById('mainContent');
-    const ytWrap = document.getElementById('ytWrap');
 
-    function begin() {
-      ytWrap.style.display = 'block';
-      ytWrap.innerHTML = `
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const nextBtn = document.getElementById('nextBtn');
+
+    const globalMusic = document.getElementById('globalMusic');
+    const stopMusicBtn = document.getElementById('stopMusicBtn');
+
+    function startSpotify() {
+      // Inject Spotify embed ONLY after user clicks "next"
+      // (autoplay may still depend on browser, but this is the best shot since it's user-initiated)
+      globalMusic.innerHTML = `
         <iframe
-          width="560" height="315"
-          src="https://www.youtube.com/embed/YHH4giJHWB8?autoplay=1&mute=0&playsinline=1"
-          title="YouTube video player"
-          frameborder="0"
-          allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen></iframe>
+          data-testid="embed-iframe"
+          style="border-radius:12px"
+          src="https://open.spotify.com/embed/track/7dJYggqjKo71KI9sLzqCs8?utm_source=generator&autoplay=1"
+          width="100%"
+          height="352"
+          frameBorder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"></iframe>
       `;
+    }
 
+    function stopSpotify() {
+      // With cross-origin iframes, the reliable "stop" is removing the iframe
+      globalMusic.innerHTML = '';
+    }
+
+    nextBtn.addEventListener('click', () => {
+      startSpotify();
+      step1.style.display = 'none';
+      step2.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    });
+
+    function beginMain() {
       intro.style.display = 'none';
       main.style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
-    document.getElementById('yesA').addEventListener('click', begin);
-    document.getElementById('yesB').addEventListener('click', begin);
+    document.getElementById('yesA').addEventListener('click', beginMain);
+    document.getElementById('yesB').addEventListener('click', beginMain);
+
+    stopMusicBtn.addEventListener('click', stopSpotify);
 
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
@@ -595,23 +636,6 @@
     // Initialize
     reset();
   })();
-  </script>
-
-  <script>
-    const intro = document.getElementById('intro');
-    const main = document.getElementById('mainContent');
-    const ytWrap = document.getElementById('ytWrap');
-
-    function begin() {
-      ytWrap.style.display = 'block';
-      ytWrap.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/YHH4giJHWB8?autoplay=1&mute=0&playsinline=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
-      intro.style.display = 'none';
-      main.style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }
-
-    document.getElementById('yesA').addEventListener('click', begin);
-    document.getElementById('yesB').addEventListener('click', begin);
   </script>
 
   </div>
