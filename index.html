@@ -41,36 +41,13 @@
       color: #555;
     }
 
-    .tiktok-wrapper {
-      background: #fff0f5;
-      border-radius: 20px;
-      padding: 1.5rem 1rem;
-      margin: 2rem auto;
-      max-width: 650px;
-    }
-
-    .tiktok-caption {
-      font-weight: bold;
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      color: #c9184a;
-    }
-
-    .game {
-      max-width: 650px;
-      margin: 2.5rem auto 0;
-      background: rgba(255, 240, 245, 0.65);
-      border-radius: 20px;
-      padding: 1.25rem 1rem 1.5rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.10);
-    }
-
     .btn {
       border: none;
       border-radius: 12px;
       padding: 0.65rem 1rem;
       font-weight: 800;
       cursor: pointer;
+      margin: 0.25rem;
     }
 
     .intro {
@@ -104,6 +81,21 @@
     @keyframes dropIn {
       to { opacity: 1; transform: translateY(0); }
     }
+
+    .tiktok-wrapper {
+      background: #fff0f5;
+      border-radius: 20px;
+      padding: 1.5rem 1rem;
+      margin: 2rem auto;
+      max-width: 650px;
+    }
+
+    .tiktok-caption {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: #c9184a;
+    }
   </style>
 </head>
 <body>
@@ -113,118 +105,110 @@
     <source src="githubsong.mp4" type="audio/mp4">
   </audio>
 
-  <!-- INTRO -->
+  <!-- INTRO FLOW -->
   <div id="intro" class="intro">
     <div class="intro-card">
 
+      <!-- STEP 1 -->
       <div id="step1">
         <h1 class="drop-in">my little eggington</h1>
         <button class="btn" id="nextBtn">next</button>
       </div>
 
+      <!-- STEP 2 -->
       <div id="step2" style="display:none;">
         <h1 class="drop-in">will you be my valentine? 💘💘💘</h1>
         <button class="btn" id="yesA">Yes</button>
         <button class="btn" id="yesB">Yes</button>
       </div>
 
+      <!-- STEP 3 (FIXED) -->
       <div id="step3" style="display:none;">
         <h1 class="drop-in">are you sure 🥹 ?</h1>
+
+        <div style="margin: 1rem 0 1.5rem;">
+          <button class="btn" id="sureYesA">yes</button>
+          <button class="btn" id="sureYesB">yes</button>
+        </div>
 
         <figure>
           <img src="e4.png">
         </figure>
-
-        <button class="btn" id="sureYesA">yes</button>
-        <button class="btn" id="sureYesB">yes</button>
       </div>
 
     </div>
   </div>
 
+  <!-- MAIN CONTENT -->
   <div id="mainContent" style="display:none;">
 
-  <h1>Happy Valentine’s Day my little chickennnn❤️</h1>
+    <h1>Happy Valentine’s Day my little chickennnn❤️</h1>
 
-  <p>
-    Hi baby, I made this little website for u.
-    <br><br>
-    Hope you like it💕
-  </p>
+    <p>
+      Hi baby, I made this little website for u.
+      <br><br>
+      Hope you like it💕
+    </p>
 
-  <figure>
-    <img src="e1.png">
-    <figcaption>so SEXY ❤️</figcaption>
-  </figure>
+    <figure>
+      <img src="e1.png">
+      <figcaption>so SEXY ❤️</figcaption>
+    </figure>
 
-  <figure>
-    <img src="e2.png">
-    <figcaption>💕</figcaption>
-  </figure>
+    <figure>
+      <img src="e2.png">
+      <figcaption>💕</figcaption>
+    </figure>
 
-  <figure>
-    <img src="E3.png">
-    <figcaption>luvu baby ❤️</figcaption>
-  </figure>
+    <figure>
+      <img src="E3.png">
+      <figcaption>luvu baby ❤️</figcaption>
+    </figure>
 
-  <button class="btn" id="stopMusicBtn">click to stop playing music</button>
+    <button class="btn" id="stopMusicBtn">click to stop playing music</button>
 
-  <div class="tiktok-wrapper">
-    <div class="tiktok-caption">
-      How I move when I am around u ⬇️ 🥵
+    <div class="tiktok-wrapper">
+      <div class="tiktok-caption">
+        How I move when I am around u ⬇️ 🥵
+      </div>
+
+      <blockquote class="tiktok-embed"
+        cite="https://www.tiktok.com/@biggythedancer1994/video/7546655045933124886"
+        data-video-id="7546655045933124886">
+        <section>
+          <a target="_blank" href="https://www.tiktok.com/@biggythedancer1994">
+            @biggythedancer1994
+          </a>
+        </section>
+      </blockquote>
+      <script async src="https://www.tiktok.com/embed.js"></script>
     </div>
 
-    <blockquote class="tiktok-embed"
-      cite="https://www.tiktok.com/@biggythedancer1994/video/7546655045933124886"
-      data-video-id="7546655045933124886">
-      <section>
-        <a target="_blank"
-           href="https://www.tiktok.com/@biggythedancer1994">
-          @biggythedancer1994
-        </a>
-      </section>
-    </blockquote>
-    <script async src="https://www.tiktok.com/embed.js"></script>
-  </div>
-
-  <figure>
-    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">
-    <figcaption>one last chicken for good measure... LOVE YOU CHICKEN I MISS U BAD SEE YOU SOON <33333333</figcaption>
-  </figure>
+    <figure>
+      <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">
+      <figcaption>one last chicken for good measure... LOVE YOU CHICKEN I MISS U BAD SEE YOU SOON <33333333</figcaption>
+    </figure>
 
   </div>
 
+  <!-- SCRIPT -->
   <script>
     const music = document.getElementById('bgMusic');
 
     document.getElementById('nextBtn').onclick = () => {
       music.play();
-      document.getElementById('step1').style.display = 'none';
-      document.getElementById('step2').style.display = 'block';
+      step1.style.display = 'none';
+      step2.style.display = 'block';
     };
 
-    function showAreYouSure() {
-      document.getElementById('step2').style.display = 'none';
-      document.getElementById('step3').style.display = 'block';
-    }
+    document.getElementById('yesA').onclick = () => {
+      step2.style.display = 'none';
+      step3.style.display = 'block';
+    };
+    document.getElementById('yesB').onclick = () => {
+      step2.style.display = 'none';
+      step3.style.display = 'block';
+    };
 
     function enterSite() {
-      document.getElementById('intro').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
-      window.scrollTo(0, 0);
-    }
-
-    document.getElementById('yesA').onclick = showAreYouSure;
-    document.getElementById('yesB').onclick = showAreYouSure;
-
-    document.getElementById('sureYesA').onclick = enterSite;
-    document.getElementById('sureYesB').onclick = enterSite;
-
-    document.getElementById('stopMusicBtn').onclick = () => {
-      music.pause();
-      music.currentTime = 0;
-    };
-  </script>
-
-</body>
-</html>
+      document.getElementById('intro').style.display
