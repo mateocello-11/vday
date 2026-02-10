@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Happy Valentine’s Day my little chickennnn❤️</title>
+  <title>Happy Valentine’s Day my little chickennnn!❤️</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -104,17 +104,6 @@
     @keyframes dropIn {
       to { opacity: 1; transform: translateY(0); }
     }
-
-    @keyframes popIn {
-      0% { opacity: 0; transform: scale(0.85) rotate(-2deg); }
-      60% { opacity: 1; transform: scale(1.03) rotate(1deg); }
-      100% { opacity: 1; transform: scale(1) rotate(0deg); }
-    }
-
-    .pop-in-img {
-      animation: popIn 650ms ease-out forwards;
-      transform-origin: center;
-    }
   </style>
 </head>
 <body>
@@ -140,12 +129,12 @@
       </div>
 
       <div id="step3" style="display:none;">
-        <div>
-          <img class="pop-in-img" src="e4.png">
-        </div>
-        <h1 id="areYouSureText" style="display:none;" class="drop-in">are you sure 🥹 ?</h1>
-        <button class="btn" id="sureYesA" style="display:none;">Yes</button>
-        <button class="btn" id="sureYesB" style="display:none;">Yes</button>
+        <figure style="margin-top:0;">
+          <img src="e4.png">
+        </figure>
+        <h1 class="drop-in">are you sure 🥹 ?</h1>
+        <button class="btn" id="sureYesA">yes</button>
+        <button class="btn" id="sureYesB">yes</button>
       </div>
 
     </div>
@@ -221,12 +210,6 @@
     function showStep3() {
       document.getElementById('step2').style.display = 'none';
       document.getElementById('step3').style.display = 'block';
-
-      setTimeout(() => {
-        document.getElementById('areYouSureText').style.display = 'block';
-        document.getElementById('sureYesA').style.display = 'inline-block';
-        document.getElementById('sureYesB').style.display = 'inline-block';
-      }, 2000);
     }
 
     document.getElementById('yesA').onclick = showStep3;
