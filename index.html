@@ -104,6 +104,17 @@
     @keyframes dropIn {
       to { opacity: 1; transform: translateY(0); }
     }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.85) rotate(-2deg); }
+      60% { opacity: 1; transform: scale(1.03) rotate(1deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    .pop-in-img {
+      animation: popIn 650ms ease-out forwards;
+      transform-origin: center;
+    }
   </style>
 </head>
 <body>
@@ -126,6 +137,15 @@
         <h1 class="drop-in">will you be my valentine? 💘💘💘</h1>
         <button class="btn" id="yesA">Yes</button>
         <button class="btn" id="yesB">Yes</button>
+      </div>
+
+      <div id="step3" style="display:none;">
+        <div>
+          <img class="pop-in-img" src="e4.png">
+        </div>
+        <h1 id="areYouSureText" style="display:none;" class="drop-in">are you sure 🥹 ?</h1>
+        <button class="btn" id="sureYesA" style="display:none;">Yes</button>
+        <button class="btn" id="sureYesB" style="display:none;">Yes</button>
       </div>
 
     </div>
@@ -198,8 +218,22 @@
       window.scrollTo(0, 0);
     }
 
-    document.getElementById('yesA').onclick = enterSite;
-    document.getElementById('yesB').onclick = enterSite;
+    function showStep3() {
+      document.getElementById('step2').style.display = 'none';
+      document.getElementById('step3').style.display = 'block';
+
+      setTimeout(() => {
+        document.getElementById('areYouSureText').style.display = 'block';
+        document.getElementById('sureYesA').style.display = 'inline-block';
+        document.getElementById('sureYesB').style.display = 'inline-block';
+      }, 2000);
+    }
+
+    document.getElementById('yesA').onclick = showStep3;
+    document.getElementById('yesB').onclick = showStep3;
+
+    document.getElementById('sureYesA').onclick = enterSite;
+    document.getElementById('sureYesB').onclick = enterSite;
 
     document.getElementById('stopMusicBtn').onclick = () => {
       music.pause();
