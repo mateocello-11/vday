@@ -129,10 +129,12 @@
       </div>
 
       <div id="step3" style="display:none;">
-        <figure style="margin-top:0;">
+        <h1 class="drop-in">are you sure 🥹 ?</h1>
+
+        <figure>
           <img src="e4.png">
         </figure>
-        <h1 class="drop-in">are you sure 🥹 ?</h1>
+
         <button class="btn" id="sureYesA">yes</button>
         <button class="btn" id="sureYesB">yes</button>
       </div>
@@ -201,19 +203,19 @@
       document.getElementById('step2').style.display = 'block';
     };
 
+    function showAreYouSure() {
+      document.getElementById('step2').style.display = 'none';
+      document.getElementById('step3').style.display = 'block';
+    }
+
     function enterSite() {
       document.getElementById('intro').style.display = 'none';
       document.getElementById('mainContent').style.display = 'block';
       window.scrollTo(0, 0);
     }
 
-    function showStep3() {
-      document.getElementById('step2').style.display = 'none';
-      document.getElementById('step3').style.display = 'block';
-    }
-
-    document.getElementById('yesA').onclick = showStep3;
-    document.getElementById('yesB').onclick = showStep3;
+    document.getElementById('yesA').onclick = showAreYouSure;
+    document.getElementById('yesB').onclick = showAreYouSure;
 
     document.getElementById('sureYesA').onclick = enterSite;
     document.getElementById('sureYesB').onclick = enterSite;
