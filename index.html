@@ -47,7 +47,7 @@
       padding: 0.65rem 1rem;
       font-weight: 800;
       cursor: pointer;
-      margin: 0.25rem;
+      margin: 0.35rem;
     }
 
     .intro {
@@ -96,6 +96,11 @@
       margin-bottom: 1rem;
       color: #c9184a;
     }
+
+    /* e4 specific sizing */
+    .e4-img {
+      max-width: 280px;
+    }
   </style>
 </head>
 <body>
@@ -105,7 +110,7 @@
     <source src="githubsong.mp4" type="audio/mp4">
   </audio>
 
-  <!-- INTRO FLOW -->
+  <!-- INTRO -->
   <div id="intro" class="intro">
     <div class="intro-card">
 
@@ -126,13 +131,15 @@
       <div id="step3" style="display:none;">
         <h1 class="drop-in">are you sure 🥹 ?</h1>
 
-        <div style="margin: 1rem 0 1.5rem;">
+        <!-- YES buttons ABOVE image -->
+        <div style="margin: 1rem 0 1.25rem;">
           <button class="btn" id="sureYesA">yes</button>
           <button class="btn" id="sureYesB">yes</button>
         </div>
 
+        <!-- Smaller e4 image -->
         <figure>
-          <img src="e4.png">
+          <img src="e4.png" class="e4-img">
         </figure>
       </div>
 
@@ -195,20 +202,30 @@
   <script>
     const music = document.getElementById('bgMusic');
 
-    document.getElementById('nextBtn').onclick = () => {
+    nextBtn.onclick = () => {
       music.play();
       step1.style.display = 'none';
       step2.style.display = 'block';
     };
 
-    document.getElementById('yesA').onclick = () => {
-      step2.style.display = 'none';
-      step3.style.display = 'block';
-    };
-    document.getElementById('yesB').onclick = () => {
+    yesA.onclick = yesB.onclick = () => {
       step2.style.display = 'none';
       step3.style.display = 'block';
     };
 
     function enterSite() {
-      document.getElementById('intro').style.display
+      intro.style.display = 'none';
+      mainContent.style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    sureYesA.onclick = sureYesB.onclick = enterSite;
+
+    stopMusicBtn.onclick = () => {
+      music.pause();
+      music.currentTime = 0;
+    };
+  </script>
+
+</body>
+</html>
