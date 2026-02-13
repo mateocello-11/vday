@@ -116,7 +116,7 @@
       max-width: 420px;
       border-radius: 16px;
       background: rgba(255,255,255,0.65);
-      touch-action: none; /* <-- added for smooth finger-drag */
+      touch-action: none;
     }
   </style>
 </head>
@@ -181,11 +181,12 @@
     <figcaption>luvu baby ❤️</figcaption>
   </figure>
 
-  <!-- HEART GAME (ADDED HERE) -->
+  <!-- HEART GAME -->
   <section class="game">
     <h2>Catch the Hearts 💘</h2>
     <p>Move your mouse (or finger) to catch hearts!</p>
     <div>Score: <span id="score">0</span></div>
+    <div>Time: <span id="timeLeft">30</span>s</div>
     <button class="btn" id="startBtn">Start / Restart</button>
     <canvas id="gameCanvas" width="420" height="520"></canvas>
   </section>
@@ -242,14 +243,17 @@ stopMusicBtn.onclick = () => {
   music.currentTime = 0;
 };
 
-/* ===== HEART GAME ===== */
+/* ===== HEART GAME (TIME LIMIT ADDED ONLY) ===== */
 (() => {
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreEl = document.getElementById('score');
+const timeLeftEl = document.getElementById('timeLeft');
 const startBtn = document.getElementById('startBtn');
 
 let running=false, score=0, hearts=[], bucketX=180;
+let timeLeft=30;
+let timerId=null;
 
 function spawn(){
   hearts.push({x:Math.random()*400+10,y:-10,s:2+Math.random()*2});
@@ -262,8 +266,16 @@ function drawHeart(x,y){
   ctx.lineTo(x,y+10);
   ctx.fill();
 }
+
+function endGame(){
+  running=false;
+  clearInterval(timerId);
+  timerId=null;
+}
+
 function loop(){
   if(!running) return;
+
   ctx.clearRect(0,0,420,520);
 
   ctx.fillStyle="#c9184a";
@@ -284,6 +296,7 @@ function loop(){
       hearts.splice(i,1);
     }
   }
+
   requestAnimationFrame(loop);
 }
 
@@ -292,13 +305,11 @@ function setBucketFromClientX(clientX){
   bucketX = (clientX - rect.left) * (420 / rect.width) - 30;
 }
 
-/* mouse */
 canvas.onmousemove = e => {
   if(!running) return;
   setBucketFromClientX(e.clientX);
 };
 
-/* finger drag (pointer events) */
 canvas.addEventListener('pointerdown', (e) => {
   if(!running) return;
   canvas.setPointerCapture(e.pointerId);
@@ -314,7 +325,22 @@ startBtn.onclick=()=>{
   score=0;
   hearts=[];
   scoreEl.textContent=0;
+
+  timeLeft=30;
+  timeLeftEl.textContent=timeLeft;
+
   running=true;
+
+  clearInterval(timerId);
+  timerId=setInterval(()=>{
+    if(!running) return;
+    timeLeft--;
+    timeLeftEl.textContent=timeLeft;
+    if(timeLeft<=0){
+      endGame();
+    }
+  },1000);
+
   loop();
 };
 })();
