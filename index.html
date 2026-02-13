@@ -97,135 +97,209 @@
       color: #c9184a;
     }
 
-    /* e4 specific sizing */
     .e4-img {
       max-width: 280px;
+    }
+
+    /* GAME */
+    .game {
+      max-width: 650px;
+      margin: 2rem auto;
+      background: rgba(255, 240, 245, 0.65);
+      border-radius: 20px;
+      padding: 1.25rem 1rem 1.5rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.10);
+    }
+
+    #gameCanvas {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.65);
     }
   </style>
 </head>
 <body>
 
-  <!-- BACKGROUND MUSIC -->
-  <audio id="bgMusic" loop>
-    <source src="githubsong.mp4" type="audio/mp4">
-  </audio>
+<audio id="bgMusic" loop>
+  <source src="githubsong.mp4" type="audio/mp4">
+</audio>
 
-  <!-- INTRO -->
-  <div id="intro" class="intro">
-    <div class="intro-card">
+<div id="intro" class="intro">
+  <div class="intro-card">
 
-      <!-- STEP 1 -->
-      <div id="step1">
-        <h1 class="drop-in">my little eggington</h1>
-        <button class="btn" id="nextBtn">next</button>
-      </div>
-
-      <!-- STEP 2 -->
-      <div id="step2" style="display:none;">
-        <h1 class="drop-in">will you be my valentine? 💘💘💘</h1>
-        <button class="btn" id="yesA">Yes</button>
-        <button class="btn" id="yesB">Yes</button>
-      </div>
-
-      <!-- STEP 3 (FIXED) -->
-      <div id="step3" style="display:none;">
-        <h1 class="drop-in">are you sure 🥹 ?</h1>
-
-        <!-- YES buttons ABOVE image -->
-        <div style="margin: 1rem 0 1.25rem;">
-          <button class="btn" id="sureYesA">yes</button>
-          <button class="btn" id="sureYesB">yes</button>
-        </div>
-
-        <!-- Smaller e4 image -->
-        <figure>
-          <img src="e4.png" class="e4-img">
-        </figure>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- MAIN CONTENT -->
-  <div id="mainContent" style="display:none;">
-
-    <h1>Happy Valentine’s Day my little chickennnn❤️</h1>
-
-    <p>
-      Hi baby, I made this little website for u.
-      <br><br>
-      Hope you like it💕
-    </p>
-
-    <figure>
-      <img src="e1.png">
-      <figcaption>so SEXY ❤️</figcaption>
-    </figure>
-
-    <figure>
-      <img src="e2.png">
-      <figcaption>💕</figcaption>
-    </figure>
-
-    <figure>
-      <img src="E3.png">
-      <figcaption>luvu baby ❤️</figcaption>
-    </figure>
-
-    <button class="btn" id="stopMusicBtn">click to stop playing music</button>
-
-    <div class="tiktok-wrapper">
-      <div class="tiktok-caption">
-        How I move when I am around u ⬇️ 🥵
-      </div>
-
-      <blockquote class="tiktok-embed"
-        cite="https://www.tiktok.com/@biggythedancer1994/video/7546655045933124886"
-        data-video-id="7546655045933124886">
-        <section>
-          <a target="_blank" href="https://www.tiktok.com/@biggythedancer1994">
-            @biggythedancer1994
-          </a>
-        </section>
-      </blockquote>
-      <script async src="https://www.tiktok.com/embed.js"></script>
+    <div id="step1">
+      <h1 class="drop-in">my little eggington</h1>
+      <button class="btn" id="nextBtn">next</button>
     </div>
 
-    <figure>
-      <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">
-      <figcaption>one last chicken for good measure... LOVE YOU CHICKEN I MISS U BAD SEE YOU SOON <33333333</figcaption>
-    </figure>
+    <div id="step2" style="display:none;">
+      <h1 class="drop-in">will you be my valentine? 💘💘💘</h1>
+      <button class="btn" id="yesA">Yes</button>
+      <button class="btn" id="yesB">Yes</button>
+    </div>
+
+    <div id="step3" style="display:none;">
+      <h1 class="drop-in">are you sure 🥹 ?</h1>
+
+      <div style="margin: 1rem 0 1.25rem;">
+        <button class="btn" id="sureYesA">yes</button>
+        <button class="btn" id="sureYesB">yes</button>
+      </div>
+
+      <figure>
+        <img src="e4.png" class="e4-img">
+      </figure>
+    </div>
 
   </div>
+</div>
 
-  <!-- SCRIPT -->
-  <script>
-    const music = document.getElementById('bgMusic');
+<div id="mainContent" style="display:none;">
 
-    nextBtn.onclick = () => {
-      music.play();
-      step1.style.display = 'none';
-      step2.style.display = 'block';
-    };
+  <h1>Happy Valentine’s Day my little chickennnn❤️</h1>
 
-    yesA.onclick = yesB.onclick = () => {
-      step2.style.display = 'none';
-      step3.style.display = 'block';
-    };
+  <p>
+    Hi baby, I made this little website for u.
+    <br><br>
+    Hope you like it💕
+  </p>
 
-    function enterSite() {
-      intro.style.display = 'none';
-      mainContent.style.display = 'block';
-      window.scrollTo(0, 0);
+  <figure>
+    <img src="e1.png">
+    <figcaption>so SEXY ❤️</figcaption>
+  </figure>
+
+  <figure>
+    <img src="e2.png">
+    <figcaption>💕</figcaption>
+  </figure>
+
+  <figure>
+    <img src="E3.png">
+    <figcaption>luvu baby ❤️</figcaption>
+  </figure>
+
+  <!-- HEART GAME (ADDED HERE) -->
+  <section class="game">
+    <h2>Catch the Hearts 💘</h2>
+    <p>Move your mouse (or finger) to catch hearts!</p>
+    <div>Score: <span id="score">0</span></div>
+    <button class="btn" id="startBtn">Start / Restart</button>
+    <canvas id="gameCanvas" width="420" height="520"></canvas>
+  </section>
+
+  <button class="btn" id="stopMusicBtn">click to stop playing music</button>
+
+  <div class="tiktok-wrapper">
+    <div class="tiktok-caption">
+      How I move when I am around u ⬇️ 🥵
+    </div>
+
+    <blockquote class="tiktok-embed"
+      cite="https://www.tiktok.com/@biggythedancer1994/video/7546655045933124886"
+      data-video-id="7546655045933124886">
+      <section>
+        <a target="_blank" href="https://www.tiktok.com/@biggythedancer1994">
+          @biggythedancer1994
+        </a>
+      </section>
+    </blockquote>
+    <script async src="https://www.tiktok.com/embed.js"></script>
+  </div>
+
+  <figure>
+    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">
+    <figcaption>one last chicken for good measure... LOVE YOU CHICKEN I MISS U BAD SEE YOU SOON <33333333</figcaption>
+  </figure>
+
+</div>
+
+<script>
+const music = document.getElementById('bgMusic');
+
+nextBtn.onclick = () => {
+  music.play();
+  step1.style.display='none';
+  step2.style.display='block';
+};
+
+yesA.onclick = yesB.onclick = () => {
+  step2.style.display='none';
+  step3.style.display='block';
+};
+
+function enterSite(){
+  intro.style.display='none';
+  mainContent.style.display='block';
+}
+
+sureYesA.onclick = sureYesB.onclick = enterSite;
+
+stopMusicBtn.onclick = () => {
+  music.pause();
+  music.currentTime = 0;
+};
+
+/* ===== HEART GAME ===== */
+(() => {
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const scoreEl = document.getElementById('score');
+const startBtn = document.getElementById('startBtn');
+
+let running=false, score=0, hearts=[], bucketX=180;
+
+function spawn(){
+  hearts.push({x:Math.random()*400+10,y:-10,s:2+Math.random()*2});
+}
+function drawHeart(x,y){
+  ctx.fillStyle="#c9184a";
+  ctx.beginPath();
+  ctx.arc(x-5,y,5,0,Math.PI*2);
+  ctx.arc(x+5,y,5,0,Math.PI*2);
+  ctx.lineTo(x,y+10);
+  ctx.fill();
+}
+function loop(){
+  if(!running) return;
+  ctx.clearRect(0,0,420,520);
+
+  ctx.fillStyle="#c9184a";
+  ctx.fillRect(bucketX,480,60,15);
+
+  if(Math.random()<0.05) spawn();
+
+  for(let i=hearts.length-1;i>=0;i--){
+    const h=hearts[i];
+    h.y+=h.s;
+    drawHeart(h.x,h.y);
+
+    if(h.y>480 && h.x>bucketX && h.x<bucketX+60){
+      score++;
+      scoreEl.textContent=score;
+      hearts.splice(i,1);
+    } else if(h.y>520){
+      hearts.splice(i,1);
     }
+  }
+  requestAnimationFrame(loop);
+}
 
-    sureYesA.onclick = sureYesB.onclick = enterSite;
+canvas.onmousemove = e=>{
+  const rect=canvas.getBoundingClientRect();
+  bucketX=(e.clientX-rect.left)*(420/rect.width)-30;
+};
 
-    stopMusicBtn.onclick = () => {
-      music.pause();
-      music.currentTime = 0;
-    };
-  </script>
+startBtn.onclick=()=>{
+  score=0;
+  hearts=[];
+  scoreEl.textContent=0;
+  running=true;
+  loop();
+};
+})();
+</script>
 
 </body>
 </html>
