@@ -116,6 +116,7 @@
       max-width: 420px;
       border-radius: 16px;
       background: rgba(255,255,255,0.65);
+      touch-action: none; /* <-- added for smooth finger-drag */
     }
   </style>
 </head>
@@ -286,10 +287,28 @@ function loop(){
   requestAnimationFrame(loop);
 }
 
-canvas.onmousemove = e=>{
-  const rect=canvas.getBoundingClientRect();
-  bucketX=(e.clientX-rect.left)*(420/rect.width)-30;
+function setBucketFromClientX(clientX){
+  const rect = canvas.getBoundingClientRect();
+  bucketX = (clientX - rect.left) * (420 / rect.width) - 30;
+}
+
+/* mouse */
+canvas.onmousemove = e => {
+  if(!running) return;
+  setBucketFromClientX(e.clientX);
 };
+
+/* finger drag (pointer events) */
+canvas.addEventListener('pointerdown', (e) => {
+  if(!running) return;
+  canvas.setPointerCapture(e.pointerId);
+  setBucketFromClientX(e.clientX);
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  if(!running) return;
+  setBucketFromClientX(e.clientX);
+});
 
 startBtn.onclick=()=>{
   score=0;
